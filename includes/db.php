@@ -25,9 +25,9 @@ $connection = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 // easy way - not correct way
 // $connection = mysqli_connect("localhost",  "root", "", "cms");
 
-if ($connection) {
-    echo "We are connected";
-}
+// if ($connection) {
+//     echo "We are connected";
+// }
     
 // formatter is removing it:
 // 
