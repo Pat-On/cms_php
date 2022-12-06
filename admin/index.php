@@ -2,6 +2,15 @@
 
     <div id="wrapper">
 
+    <?php 
+        // testing connection <- debugging
+        if($connection) echo "connection working"
+    
+    
+    ?>
+
+
+
         <!-- Navigation -->
         <?php include "includes/navigation.php" ?>
 
