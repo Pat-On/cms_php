@@ -1,5 +1,5 @@
 <?php include "includes/admin_header.php" ?>
-
+<?php include "functions.php" ?>
 
 <div id="wrapper">
 
@@ -23,33 +23,8 @@
 
                     <div class="col-xs-6">
 
-                        <?php
+                        <?php insert_categories(); ?>
 
-                        if (isset($_POST["submit"])) {
-                            // echo "<h1> WORKING <h1/>"; // testing
-                            $cat_title = $_POST["cat_title"];
-
-                            // simple validation in PHP
-                            if ($cat_title == "" || empty($cat_title)) {
-                                echo "This field should not be empty";
-                            } else {
-                                // constructing query
-                                $query = "INSERT INTO categories(cat_title) ";
-                                $query .= "VALUE('{$cat_title}')";
-
-                                // sending query
-                                $create_category_query = mysqli_query($connection, $query);
-
-                                // if failed
-                                if (!$create_category_query) {
-                                    // killing script
-                                    die('QUERY FAILED' . mysqli_error(($connection)));
-                                }
-                            }
-                        }
-
-
-                        ?>
                         <form action="" method="post">
                             <div class="form-group">
                                 <label for="cat-title">Add Category</label>
@@ -66,6 +41,7 @@
 
 
                         <?php
+                        // candidate to refactor
                         if (isset($_GET['edit'])) {
                             $cat_id = $_GET['edit'];
 
@@ -92,37 +68,12 @@
                             <tbody>
 
                                 <?php // FIND ALL CATEGORIES QUERY
-                                $query = "SELECT * FROM categories";
-                                $select_categories = mysqli_query($connection, $query);
-
-
-                                while ($row = mysqli_fetch_assoc($select_categories)) {
-                                    $cat_id = $row["cat_id"];
-                                    $cat_title = $row["cat_title"];
-
-                                    echo "<tr>";
-                                    echo "<td>{$cat_id}</td>";
-                                    echo "<td>{$cat_title}</td>";
-                                    echo "<td><a href='categories.php?delete={$cat_id}'>Delete</a></td>";
-                                    echo "<td><a href='categories.php?edit={$cat_id}'>Edit</a></td>";
-                                    echo "</tr>";
-                                }
-
+                                findAllCategories();
                                 ?>
 
 
                                 <?php // DELETE QUERY
-                                if (isset($_GET['delete'])) {
-                                    $the_cat_id = $_GET['delete'];
-                                    $query = "DELETE FROM categories WHERE cat_id = {$the_cat_id} ";
-                                    $delete_query = mysqli_query($connection, $query);
-
-                                    // sending user - like refresh
-                                    // without it we need to refresh page manually or click delete twice
-                                    header("Location: categories.php");
-                                }
-
-
+                                deleteCategories();
                                 ?>
 
                                 <!-- <tr>
