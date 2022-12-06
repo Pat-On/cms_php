@@ -1,4 +1,8 @@
 <!-- he brought connection to header because he want to have it accessible in all php files -->
+<?php
+    // it is buffering request in our headers - redirection - explained later in details
+    ob_start();
+?>
 <?php include "../includes/db.php" ?>
 
 <!DOCTYPE html>
