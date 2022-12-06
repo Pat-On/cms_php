@@ -41,7 +41,7 @@
                                 $create_category_query = mysqli_query($connection, $query);
 
                                 // if failed
-                                if(!$create_category_query) {
+                                if (!$create_category_query) {
                                     // killing script
                                     die('QUERY FAILED' . mysqli_error(($connection)));
                                 }
@@ -50,10 +50,6 @@
 
 
                         ?>
-
-
-
-
                         <form action="" method="post">
                             <div class="form-group">
                                 <label for="cat-title">Add Category</label>
@@ -67,15 +63,24 @@
 
                             </div>
                         </form>
+
+
+                        <?php
+                        if (isset($_GET['edit'])) {
+                            $cat_id = $_GET['edit'];
+
+                            include "./includes/update_categories.php";
+                        }
+                        ?>
+
+
+
+
+
                     </div>
 
                     <div class="col-xs-6">
 
-                        <?php
-                        $query = "SELECT * FROM categories";
-                        $select_categories = mysqli_query($connection, $query);
-
-                        ?>
 
                         <table class="table table-bordered table-hover">
                             <thead>
@@ -85,7 +90,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php
+
+                                <?php // FIND ALL CATEGORIES QUERY
+                                $query = "SELECT * FROM categories";
+                                $select_categories = mysqli_query($connection, $query);
+
+
                                 while ($row = mysqli_fetch_assoc($select_categories)) {
                                     $cat_id = $row["cat_id"];
                                     $cat_title = $row["cat_title"];
@@ -93,10 +103,28 @@
                                     echo "<tr>";
                                     echo "<td>{$cat_id}</td>";
                                     echo "<td>{$cat_title}</td>";
+                                    echo "<td><a href='categories.php?delete={$cat_id}'>Delete</a></td>";
+                                    echo "<td><a href='categories.php?edit={$cat_id}'>Edit</a></td>";
                                     echo "</tr>";
                                 }
 
                                 ?>
+
+
+                                <?php // DELETE QUERY
+                                if (isset($_GET['delete'])) {
+                                    $the_cat_id = $_GET['delete'];
+                                    $query = "DELETE FROM categories WHERE cat_id = {$the_cat_id} ";
+                                    $delete_query = mysqli_query($connection, $query);
+
+                                    // sending user - like refresh
+                                    // without it we need to refresh page manually or click delete twice
+                                    header("Location: categories.php");
+                                }
+
+
+                                ?>
+
                                 <!-- <tr>
                                     <td>Baseball Category</td>
                                     <td>Cat Category</td>
