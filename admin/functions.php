@@ -67,3 +67,10 @@ function deleteCategories()
         header("Location: categories.php");
     }
 }
+
+function confirmDBQuery($queryResult) {
+    global $connection;
+    if(!$queryResult) {
+        die("QUERY FAILEDn  " . mysqli_error($connection));
+    }
+}
