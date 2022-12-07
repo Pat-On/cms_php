@@ -34,12 +34,8 @@
                             include "includes/add_posts.php";
                             break;
 
-                            case "134";
-                            echo "NICE";
-                            break;
-
-                            case "314";
-                            echo "NICE";
+                            case "edit_post";
+                            include "includes/edit_post.php";
                             break;
 
                             default;
