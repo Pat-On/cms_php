@@ -17,9 +17,11 @@
 
 
             <?php
-            $query = "SELECT * FROM posts";
-
+            $query = "SELECT * FROM posts WHERE post_status = 'published' ";
             $select_all_posts_query = mysqli_query($connection, $query);
+
+
+
             while ($row = mysqli_fetch_assoc($select_all_posts_query)) {
                 // reading from the db
                 $post_id = $row['post_id'];
@@ -28,6 +30,16 @@
                 $post_date = $row["post_date"];
                 $post_image = $row["post_image"];
                 $post_content = substr($row["post_content"], 0, 100);
+
+                $post_status = $row["post_status"];
+
+
+                // it is not clever way of doing it ^^
+                // if ($post_status !== 'published') {
+                // better solution
+
+
+
 
                 // this is such a strange syntax in one way!
             ?>
@@ -54,7 +66,12 @@
 
 
                 <!-- CLOSING BRACKET IN PHP -->
-            <?php   }  ?>
+            <?php  }
+
+            if (mysqli_num_rows($select_all_posts_query) == 0) {
+                echo '<h1> NO POST SORRY </h1>';
+            }
+            ?>
 
 
 
