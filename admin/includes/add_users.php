@@ -1,9 +1,9 @@
 <?php
 if (isset($_POST['create_user'])) {
 
-    echo $_POST['user_id'];
+    // echo $_POST['user_id'];
 
-    $user_id           = $_POST['user_id'];
+    // $user_id           = $_POST['user_id'];
     $user_firstname    = $_POST['user_firstname'];
     $user_lastname     = $_POST['user_lastname'];
     $user_role         = $_POST['user_role'];
@@ -20,21 +20,21 @@ if (isset($_POST['create_user'])) {
 
 
     // functions for images
-    move_uploaded_file($post_image_temp, "../images/$post_image");
+    // move_uploaded_file($post_image_temp, "../images/$post_image");
 
 
     // query step
-    $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date, 
-    post_image, post_content, post_tags,  post_status) ";
+    $query = "INSERT INTO users(user_firstname, user_lastname, user_role,
+    user_name, user_email, user_password) ";
 
-    $query .= "VALUES({$post_category_id}, '{$post_title}', '{$post_author}', now(), 
-    '{$post_image}', '{$post_content}', '{$post_tags}','{$post_status}' ) ";
+    $query .= "VALUES( '{$user_firstname}', '{$user_lastname}',
+    '{$user_role}', '{$username}', '{$user_email}','{$user_password}' ) ";
 
 
 
-    $create_post_query = mysqli_query($connection, $query);
+    $create_user_query = mysqli_query($connection, $query);
 
-    confirmDBQuery($create_post_query);
+    confirmDBQuery($create_user_query);
 }
 ?>
 
