@@ -1,8 +1,15 @@
 <!-- he brought connection to header because he want to have it accessible in all php files -->
 <?php
-    // it is buffering request in our headers - redirection - explained later in details
-    ob_start();
+// it is buffering request in our headers - redirection - explained later in details
+ob_start();
 ?>
+
+<?php
+// we used header to turn on sessions because by this
+// it is going to be accessible everywhere in admin part
+session_start();
+?>
+
 <?php include "../includes/db.php" ?>
 
 <!DOCTYPE html>
