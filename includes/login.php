@@ -52,6 +52,14 @@ if (isset($_POST["login"])) {
     } else {
         header("Location: ../index.php");
     }
+
+    // other approach
+    // if($username == $db_username && $password == $db_user_password){   
+    //     //username and password are correct
+    //     header("Location: ../admin");
+    // } else {
+    //     header("Location: ../index.php");
+    // }
 }
 
 
