@@ -41,7 +41,7 @@ if (isset($_POST["login"])) {
     // simple login without hashing and salting ^^
     if ($username !== $db_user_name && $password !== $db_user_password) {
         header("Location: ../index.php");
-    } else if ($username == $db_user_name && $password == $db_user_password) {
+    } else if ($username === $db_user_name && $password === $db_user_password) {
         // using sessions
         $_SESSION['username'] = $db_user_name;
         $_SESSION['firstname'] = $db_user_firstname;

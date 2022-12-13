@@ -15,11 +15,13 @@ session_start();
 
 
 <?php
-    if(isset($_SESSION['user_role'])){
-        if($_SESSION['user_role'] !== 'admin'){
-            header("Location: ../index.php");
-        }
-    }
+// temporary solution without checking type of the user ahm ^^
+if (!isset($_SESSION['user_role'])) {
+
+    // if($_SESSION['user_role'] !== 'admin'){
+    header("Location: ../index.php");
+    // }
+}
 
 ?>
 
