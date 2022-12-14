@@ -5,8 +5,6 @@
         <?php
         // testing connection <- debugging
         if ($connection) echo "connection working"
-
-
         ?>
 
 
@@ -54,12 +52,27 @@
                                         <i class="fa fa-file-text fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class='huge'>12</div>
+
+
+                                        <?php
+                                        // POST COUNT
+                                        $query = "SELECT * FROM posts";
+                                        $select_all_posts = mysqli_query($connection, $query);
+
+                                        $post_count = mysqli_num_rows($select_all_posts);
+
+                                        echo "<div class='huge'>{$post_count}</div>";
+
+
+                                        ?>
+
+
+
                                         <div>Posts</div>
                                     </div>
                                 </div>
                             </div>
-                            <a href="posts.php">
+                            <a href="./posts.php">
                                 <div class="panel-footer">
                                     <span class="pull-left">View Details</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -76,7 +89,19 @@
                                         <i class="fa fa-comments fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class='huge'>23</div>
+
+                                        <?php
+                                        // COMMENT COUNT
+                                        $query = "SELECT * FROM comments";
+                                        $select_all_comments = mysqli_query($connection, $query);
+
+                                        $comments_count = mysqli_num_rows($select_all_comments);
+
+                                        echo "<div class='huge'>{$comments_count}</div>";
+                                        ?>
+
+
+                                        <!-- <div class='huge'>23</div> -->
                                         <div>Comments</div>
                                     </div>
                                 </div>
@@ -98,7 +123,20 @@
                                         <i class="fa fa-user fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class='huge'>23</div>
+
+                                        <?php
+                                        // USERS COUNT
+                                        $query = "SELECT * FROM users";
+                                        $select_all_users = mysqli_query($connection, $query);
+
+                                        $users_count = mysqli_num_rows($select_all_users);
+
+                                        echo "<div class='huge'>{$users_count}</div>";
+                                        ?>
+
+
+
+                                        <!-- <div class='huge'>23</div> -->
                                         <div> Users</div>
                                     </div>
                                 </div>
@@ -120,7 +158,18 @@
                                         <i class="fa fa-list fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class='huge'>13</div>
+
+                                        <?php
+                                        // CATEGORIES COUNT
+                                        $query = "SELECT * FROM categories";
+                                        $select_all_categories = mysqli_query($connection, $query);
+
+                                        $categories_count = mysqli_num_rows($select_all_categories);
+
+                                        echo "<div class='huge'>{$categories_count}</div>";
+                                        ?>
+
+                                        <!-- <div class='huge'>13</div> -->
                                         <div>Categories</div>
                                     </div>
                                 </div>
@@ -137,6 +186,66 @@
                 </div>
                 <!-- /.row -->
 
+                <?php
+                $query = "SELECT * FROM posts WHERE post_status = 'draft'";
+                $select_all_draft_posts = mysqli_query($connection, $query);
+                $post_draft_count = mysqli_num_rows($select_all_draft_posts);
+
+                $query = "SELECT * FROM comments WHERE comment_status = 'unapproved'";
+                $unapproved_comments = mysqli_query($connection, $query);
+                $unapproved_comment_count = mysqli_num_rows($unapproved_comments);
+
+                $query = "SELECT * FROM users WHERE user_role = 'subscriber'";
+                $subscriber_users = mysqli_query($connection, $query);
+                $subscriber_users_count = mysqli_num_rows($subscriber_users);
+                ?>
+
+
+                <div class="row">
+                    <script type="text/javascript">
+                        google.charts.load('current', {
+                            'packages': ['bar']
+                        });
+                        google.charts.setOnLoadCallback(drawChart);
+
+                        function drawChart() {
+                            var data = google.visualization.arrayToDataTable([
+                                ['Data', 'Count'],
+
+                                // so we are inside HTML, then inside javascript, outputting from PHP sub-arrays xD
+                                <?php
+                                // HTML JS PHP xD ^^
+                                $element_text = ["Active Posts", "Draft Posts", "Comments", "Pending Comments", "Users", "Subscribers", "Categories"];
+                                $element_count = [$post_count, $post_draft_count, $comments_count, $unapproved_comment_count, $users_count, $subscriber_users_count, $categories_count,];
+
+                                for ($i = 0; $i < count($element_count); $i++) {
+                                    //  :D
+                                    echo "['{$element_text[$i]}'" . " ," . "{$element_count[$i]}],";
+                                }
+
+
+                                ?>
+
+
+                                // ['Posts', 1000]
+                            ]);
+
+                            const options = {
+                                chart: {
+                                    title: 'TITLE',
+                                    subtitle: 'SUBTITLE',
+                                }
+                            };
+
+                            const chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+                            chart.draw(data, google.charts.Bar.convertOptions(options));
+                        }
+                    </script>
+
+                    <div id="columnchart_material" style="width: 'auto'; height: 500px;"></div>
+
+                </div>
 
 
             </div>
