@@ -1,5 +1,8 @@
-
-
+<?php
+// we used header to turn on sessions because by this
+// it is going to be accessible everywhere in admin part
+session_start();
+?>
 
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -43,6 +46,19 @@
                 <li>
                     <a href="admin">Admin</a>
                 </li>
+
+                <?php
+                    echo $_SESSION["user_role"];
+                    if(isset($_SESSION["user_role"])){
+                        // you can check role and allow based on it access 
+                        if(isset($_GET['p_id'])){
+                            $the_post_id = $_GET['p_id'];
+                            echo "<li> <a href='admin/posts.php?source=edit_post&p_id={$the_post_id}'>Edit Post</a></li>";
+                        }
+                    }
+                ?>
+
+
 <!--                 
                 <li>
                     <a href="#">Services</a>
