@@ -28,6 +28,7 @@
 
         <thead>
             <tr>
+                <th><input type="checkbox" class="" id="select"></th>
                 <th>Id</th>
                 <th>Author</th>
                 <th>Title</th>
@@ -59,6 +60,13 @@
                 $post_date = $row["post_date"];
 
                 echo "<tr>";
+
+            ?>
+
+                <td><input class='checkBoxes' type='checkbox' class='' id='select' name='checkBoxArray[]' value='<?php echo $post_id ?>'></td>
+
+            <?php
+                // echo "<td><input class='checkBoxes' type='checkbox' class='' id='select'></td>";
                 echo "<td>{$post_id}</td>";
                 echo "<td>{$post_author}</td>";
                 echo "<td>{$post_title}</td>";
@@ -71,14 +79,6 @@
                     $cat_title = $row['cat_title'];
                     echo "<td>{$cat_title}</td>";
                 }
-
-
-
-
-
-
-
-
 
                 echo "<td>{$post_status}</td>";
                 echo "<td><img width='100' src='../images/{$post_image}' alt='post image' /></td>";
