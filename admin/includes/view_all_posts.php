@@ -1,14 +1,52 @@
+<?php
+
+if (isset($_POST["checkBoxArray"]))
+
+    // echo "data received";
+    // echo $_POST["checkBoxArray"];
+
+    foreach ($_POST["checkBoxArray"] as $postValueID) {
+        // echo $checkBoxValue;
+        $bulk_option =  $_POST["bulk_options"];
+
+        switch ($bulk_option) {
+            case 'published':
+                $query = "UPDATE posts SET post_status = '{$bulk_option}' WHERE post_id = {$postValueID} ";
+                $update_to_published_status = mysqli_query($connection, $query);
+                confirmDBQuery($update_to_published_status);
+
+                break;
+
+            case 'draft':
+                $query = "UPDATE posts SET post_status = '{$bulk_option}' WHERE post_id = {$postValueID} ";
+                $update_to_draft_status = mysqli_query($connection, $query);
+                confirmDBQuery($update_to_draft_status);
+
+                break;
+
+            case 'delete':
+                $query = "DELETE FROM posts WHERE post_id = {$postValueID} ";
+                $update_to_delete_status = mysqli_query($connection, $query);
+                confirmDBQuery($update_to_delete_status);
+
+                break;
+        }
+    }
+
+?>
+
+
 <form action="" class="" method="post">
     <table class="table table-bordered table-hover">
 
-        <div id="bulkOptionsContainer" class="col-xs-4">
+        <div id="bulkOptionsContainer" style="padding-left: 0px;" class="col-xs-4 red">
 
-            <select name="" id="" class="form-control">
+            <select name="bulk_options" id="" class="form-control">
 
                 <option value="">Select Option</option>
-                <option value="">Publish</option>
-                <option value="">Draft</option>
-                <option value="">Delete</option>
+                <option value="published">Publish</option>
+                <option value="draft">Draft</option>
+                <option value="delete">Delete</option>
 
 
             </select>
@@ -28,7 +66,7 @@
 
         <thead>
             <tr>
-                <th><input type="checkbox" class="" id="select"></th>
+                <th><input type="checkbox" class="" id="selectAllBoxes"></th>
                 <th>Id</th>
                 <th>Author</th>
                 <th>Title</th>
