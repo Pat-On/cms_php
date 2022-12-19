@@ -38,6 +38,10 @@ if (isset($_POST["login"])) {
         $db_user_role      = $row['user_role'];
     }
 
+    // password decrypting
+    $password = crypt($password, $db_user_password);
+
+
     // simple login without hashing and salting ^^
     if ($username !== $db_user_name && $password !== $db_user_password) {
         header("Location: ../index.php");

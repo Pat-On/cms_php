@@ -36,6 +36,17 @@ if (isset($_POST['edit_user'])) {
     // $user_date         = date('d-m-y');
     // $post_comment_count = 4;
 
+    // password hashing
+    $query = "SELECT randSalt FROM users";
+    $select_randsalt_query = mysqli_query($connection, $query);
+    if (!$select_randsalt_query) {
+        die("Query Failed" . mysqli_error($connection));
+    }
+
+    $row = mysqli_fetch_array($select_randsalt_query);
+    $salt = $row["randSalt"];
+    $hashed_password = crypt($user_password, $salt);
+
 
     // functions for images
     // move_uploaded_file($post_image_temp, "../images/$post_image");
@@ -47,7 +58,7 @@ if (isset($_POST['edit_user'])) {
     $query .= "user_role = '{$user_role}', ";
     $query .= "user_name = '{$username}', ";
     $query .= "user_email = '{$user_email}', ";
-    $query .= "user_password = '{$user_password}' ";
+    $query .= "user_password = '{$hashed_password}' ";
     $query .= "WHERE user_id = {$user_id} ";
 
     $edit_user_query = mysqli_query($connection, $query);

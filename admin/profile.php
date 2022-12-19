@@ -9,7 +9,7 @@ if (isset($_SESSION['username'])) {
 
     $select_user_profile_query = mysqli_query($connection, $query);
 
-    while($row = mysqli_fetch_array($select_user_profile_query)){
+    while ($row = mysqli_fetch_array($select_user_profile_query)) {
         $user_id           = $row['user_id'];
         $user_firstname    = $row['user_firstname'];
         $user_lastname     = $row['user_lastname'];
@@ -18,8 +18,6 @@ if (isset($_SESSION['username'])) {
         $user_email        = $row['user_email'];
         $user_password     = $row['user_password'];
     }
-
-
 }
 
 
@@ -27,33 +25,46 @@ if (isset($_SESSION['username'])) {
 ?>
 
 
-<?php 
-    if(isset($_POST["edit_user"])){
-        $user_id           = $_SESSION['user_id'];
-        echo $_SESSION['user_id'];
-        $user_firstname    = $_POST['user_firstname'];
-        $user_lastname     = $_POST['user_lastname'];
-        $user_role         = $_POST['user_role'];
-        $username          = $_POST['username'];
-        $user_email        = $_POST['user_email'];
-        $user_password     = $_POST['user_password'];
+<?php
+if (isset($_POST["edit_user"])) {
+    $user_id           = $_SESSION['user_id'];
+    echo $_SESSION['user_id'];
+    $user_firstname    = $_POST['user_firstname'];
+    $user_lastname     = $_POST['user_lastname'];
+    $user_role         = $_POST['user_role'];
+    $username          = $_POST['username'];
+    $user_email        = $_POST['user_email'];
+    $user_password     = $_POST['user_password'];
 
-        $query = "UPDATE users SET ";
-        $query .= "user_firstname = '{$user_firstname}', ";
-        $query .= "user_lastname = '{$user_lastname}', ";
-        $query .= "user_role = '{$user_role}', ";
-        $query .= "user_name = '{$username}', ";
-        $query .= "user_email = '{$user_email}', ";
-        $query .= "user_password = '{$user_password}' ";
-        // $query .= "WHERE user_name = '{$username}' "; // <--- I do not like it! 
-        $query .= "WHERE user_id = {$user_id} "; // <-- id is unique and unchangeable
-
-        $edit_user_query = mysqli_query($connection, $query);
-    
-        // confirmDBQuery($edit_user_query);
-
-
+    // password hashing
+    $query = "SELECT randSalt FROM users";
+    $select_randsalt_query = mysqli_query($connection, $query);
+    if (!$select_randsalt_query) {
+        die("Query Failed" . mysqli_error($connection));
     }
+
+    $row = mysqli_fetch_array($select_randsalt_query);
+    $salt = $row["randSalt"];
+    $hashed_password = crypt($user_password, $salt);
+
+
+
+    $query = "UPDATE users SET ";
+    $query .= "user_firstname = '{$user_firstname}', ";
+    $query .= "user_lastname = '{$user_lastname}', ";
+    $query .= "user_role = '{$user_role}', ";
+    $query .= "user_name = '{$username}', ";
+    $query .= "user_email = '{$user_email}', ";
+    $query .= "user_password = '{$hashed_password}' ";
+    // $query .= "WHERE user_name = '{$username}' "; // <--- I do not like it! 
+    $query .= "WHERE user_id = {$user_id} "; // <-- id is unique and unchangeable
+
+    $edit_user_query = mysqli_query($connection, $query);
+
+    // confirmDBQuery($edit_user_query);
+
+
+}
 
 
 ?>
@@ -74,7 +85,7 @@ if (isset($_SESSION['username'])) {
                     <h1 class="page-header">
                         Profile
                         <small>Author</small>
-                       
+
                     </h1>
                     <form action="" method="post" enctype="multipart/form-data">
 
