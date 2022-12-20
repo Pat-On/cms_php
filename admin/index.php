@@ -4,7 +4,10 @@
 
         <?php
         // testing connection <- debugging
-        if ($connection) echo "connection working"
+        // if ($connection) echo "connection working"
+
+
+
         ?>
 
 
@@ -27,7 +30,6 @@
 
                             <small><?php echo $_SESSION['username']; ?></small>
                         </h1>
-
 
                         <!-- <ol class="breadcrumb"> -->
                         <!-- <li>
@@ -219,7 +221,7 @@
                                 // so we are inside HTML, then inside javascript, outputting from PHP sub-arrays xD
                                 <?php
                                 // HTML JS PHP xD ^^
-                                $element_text = ['All Posts',"Published Posts", "Draft Posts", "Comments", "Pending Comments", "Users", "Subscribers", "Categories"];
+                                $element_text = ['All Posts', "Published Posts", "Draft Posts", "Comments", "Pending Comments", "Users", "Subscribers", "Categories"];
                                 $element_count = [$post_count, $post_published_count, $post_draft_count, $comments_count, $unapproved_comment_count, $users_count, $subscriber_users_count, $categories_count,];
 
                                 for ($i = 0; $i < count($element_count); $i++) {
