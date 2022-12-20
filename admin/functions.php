@@ -74,3 +74,7 @@ function confirmDBQuery($queryResult) {
         die("QUERY FAILEDn  " . mysqli_error($connection));
     }
 }
+
+function redirect($location){
+    return header("Location: " . $location);
+}

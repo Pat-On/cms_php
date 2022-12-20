@@ -4,6 +4,7 @@
 
 <!-- Navigation -->
 <?php include "includes/navigation.php" ?>
+<?php include "admin/functions.php" ?>
 
 
 <!-- Page Content -->
@@ -24,7 +25,7 @@
                 $view_query = "UPDATE posts SET post_views_count = post_views_count + 1 WHERE post_id = $post_id";
                 $send_query = mysqli_query($connection, $view_query);
 
-                if(!$send_query){
+                if (!$send_query) {
                     die("QUERY FAILED " . mysqli_error($connection));
                 }
 
@@ -96,11 +97,18 @@
                     $query = "UPDATE posts SET post_comments_count = post_comments_count + 1 ";
                     $query .= "WHERE post_id = $the_post_id ";
                     $update_comment_count = mysqli_query($connection, $query);
+
+                    redirect(location: "post.php?p_id=$the_post_id");
                 } else {
 
                     echo "<script>alert('Fields cannot be empty') </script>";
+                    // redirect(location: "post.php?p_id=$the_post_id");
                 }
+                // TODO: where to set it up that it would not give warning?? VIDEO 215
+                // Warning: Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\cms\post.php:63) in C:\xampp\htdocs\cms\admin\functions.php on line 79
+                // redirect(location: "post.php?p_id=$the_post_id");
             }
+            // redirect(location: "post.php?p_id=$the_post_id");
             ?>
 
 
