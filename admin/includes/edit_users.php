@@ -15,84 +15,88 @@ if (isset($_GET['edit_user'])) {
         $user_email        = $row['user_email'];
         $user_password     = $row['user_password'];
     }
-}
-
-if (isset($_POST['edit_user'])) {
-    // $user_id = $_GET['edit_user'];
-    // echo $_POST['user_id'];
-
-    // $user_id           = $_POST['user_id'];
-    $user_firstname    = $_POST['user_firstname'];
-    $user_lastname     = $_POST['user_lastname'];
-    $user_role         = $_POST['user_role'];
-
-    // $post_image        = $_FILES['image']['name'];
-    // $post_image_temp   = $_FILES['image']['tmp_name'];
 
 
-    $username          = $_POST['username'];
-    $user_email        = $_POST['user_email'];
-    $user_password     = $_POST['user_password'];
-    // $user_date         = date('d-m-y');
-    // $post_comment_count = 4;
+    if (isset($_POST['edit_user'])) {
+        // $user_id = $_GET['edit_user'];
+        // echo $_POST['user_id'];
 
-    // password hashing
-    // $query = "SELECT randSalt FROM users";
-    // $select_randsalt_query = mysqli_query($connection, $query);
-    // if (!$select_randsalt_query) {
-    //     die("Query Failed" . mysqli_error($connection));
-    // }
+        // $user_id           = $_POST['user_id'];
+        $user_firstname    = $_POST['user_firstname'];
+        $user_lastname     = $_POST['user_lastname'];
+        $user_role         = $_POST['user_role'];
 
-    // $row = mysqli_fetch_array($select_randsalt_query);
-    // $salt = $row["randSalt"];
-    // $hashed_password = crypt($user_password, $salt);
+        // $post_image        = $_FILES['image']['name'];
+        // $post_image_temp   = $_FILES['image']['tmp_name'];
 
 
-    // functions for images
-    // move_uploaded_file($post_image_temp, "../images/$post_image");
+        $username          = $_POST['username'];
+        $user_email        = $_POST['user_email'];
+        $user_password     = $_POST['user_password'];
+        // $user_date         = date('d-m-y');
+        // $post_comment_count = 4;
 
-    // NEW HASHING FROM PHP 5
-    if (!empty($user_password)) {
-        $query_password = "SELECT user_password FROM users WHERE user_id = '{$user_id}' ";
-        $get_user = mysqli_query($connection, $query);
-        confirmDBQuery($get_user);
+        // password hashing
+        // $query = "SELECT randSalt FROM users";
+        // $select_randsalt_query = mysqli_query($connection, $query);
+        // if (!$select_randsalt_query) {
+        //     die("Query Failed" . mysqli_error($connection));
+        // }
 
-        $row = mysqli_fetch_array($get_user);
+        // $row = mysqli_fetch_array($select_randsalt_query);
+        // $salt = $row["randSalt"];
+        // $hashed_password = crypt($user_password, $salt);
 
-        $db_user_password = $row["user_password"];
+
+        // functions for images
+        // move_uploaded_file($post_image_temp, "../images/$post_image");
+
+        // NEW HASHING FROM PHP 5
+        if (!empty($user_password)) {
+            $query_password = "SELECT user_password FROM users WHERE user_id = '{$user_id}' ";
+            $get_user = mysqli_query($connection, $query);
+            confirmDBQuery($get_user);
+
+            $row = mysqli_fetch_array($get_user);
+
+            $db_user_password = $row["user_password"];
+        }
+
+        $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
+        if ($db_user_password != $user_password && !password_verify($user_password, $db_user_password)) {
+            // tutor mistake:
+            // $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10, 'salt' => "superSecretString"));
+            echo "test";
+            $query = "UPDATE users SET ";
+            $query .= "user_firstname = '{$user_firstname}', ";
+            $query .= "user_lastname = '{$user_lastname}', ";
+            $query .= "user_role = '{$user_role}', ";
+            $query .= "user_name = '{$username}', ";
+            $query .= "user_email = '{$user_email}', ";
+            $query .= "user_password = '{$hashed_password}' ";
+            $query .= "WHERE user_id = {$user_id} ";
+        } else {
+            $query = "UPDATE users SET ";
+            $query .= "user_firstname = '{$user_firstname}', ";
+            $query .= "user_lastname = '{$user_lastname}', ";
+            $query .= "user_role = '{$user_role}', ";
+            $query .= "user_name = '{$username}', ";
+            $query .= "user_email = '{$user_email}' ";
+            $query .= "WHERE user_id = {$user_id} ";
+        }
+
+
+
+
+        $edit_user_query = mysqli_query($connection, $query);
+
+        confirmDBQuery($edit_user_query);
+
+        echo "User Updated" . " <a href='users.php'>View Users?</a>";
     }
+} else {
 
-    $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
-    if ($db_user_password != $user_password && !password_verify($user_password, $db_user_password)) {
-        // tutor mistake:
-        // $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10, 'salt' => "superSecretString"));
-        echo "test";
-        $query = "UPDATE users SET ";
-        $query .= "user_firstname = '{$user_firstname}', ";
-        $query .= "user_lastname = '{$user_lastname}', ";
-        $query .= "user_role = '{$user_role}', ";
-        $query .= "user_name = '{$username}', ";
-        $query .= "user_email = '{$user_email}', ";
-        $query .= "user_password = '{$hashed_password}' ";
-        $query .= "WHERE user_id = {$user_id} ";
-    } else {
-        $query = "UPDATE users SET ";
-        $query .= "user_firstname = '{$user_firstname}', ";
-        $query .= "user_lastname = '{$user_lastname}', ";
-        $query .= "user_role = '{$user_role}', ";
-        $query .= "user_name = '{$username}', ";
-        $query .= "user_email = '{$user_email}' ";
-        $query .= "WHERE user_id = {$user_id} ";
-    }
-
-
-
-
-    $edit_user_query = mysqli_query($connection, $query);
-
-    confirmDBQuery($edit_user_query);
-
-    echo "User Updated" . " <a href='users.php'>View Users?</a>";
+    header("Location: index.php");
 }
 
 
