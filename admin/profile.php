@@ -37,33 +37,74 @@ if (isset($_POST["edit_user"])) {
     $user_password     = $_POST['user_password'];
 
     // password hashing
-    $query = "SELECT randSalt FROM users";
-    $select_randsalt_query = mysqli_query($connection, $query);
-    if (!$select_randsalt_query) {
-        die("Query Failed" . mysqli_error($connection));
-    }
+    // $query = "SELECT randSalt FROM users";
+    // $select_randsalt_query = mysqli_query($connection, $query);
+    // if (!$select_randsalt_query) {
+    //     die("Query Failed" . mysqli_error($connection));
+    // }
 
-    $row = mysqli_fetch_array($select_randsalt_query);
-    $salt = $row["randSalt"];
-    $hashed_password = crypt($user_password, $salt);
+    // $row = mysqli_fetch_array($select_randsalt_query);
+    // $salt = $row["randSalt"];
+    // $hashed_password = crypt($user_password, $salt);
 
 
 
-    $query = "UPDATE users SET ";
-    $query .= "user_firstname = '{$user_firstname}', ";
-    $query .= "user_lastname = '{$user_lastname}', ";
-    $query .= "user_role = '{$user_role}', ";
-    $query .= "user_name = '{$username}', ";
-    $query .= "user_email = '{$user_email}', ";
-    $query .= "user_password = '{$hashed_password}' ";
-    // $query .= "WHERE user_name = '{$username}' "; // <--- I do not like it! 
-    $query .= "WHERE user_id = {$user_id} "; // <-- id is unique and unchangeable
+    // $query = "UPDATE users SET ";
+    // $query .= "user_firstname = '{$user_firstname}', ";
+    // $query .= "user_lastname = '{$user_lastname}', ";
+    // $query .= "user_role = '{$user_role}', ";
+    // $query .= "user_name = '{$username}', ";
+    // $query .= "user_email = '{$user_email}', ";
+    // $query .= "user_password = '{$hashed_password}' ";
+    // // $query .= "WHERE user_name = '{$username}' "; // <--- I do not like it! 
+    // $query .= "WHERE user_id = {$user_id} "; // <-- id is unique and unchangeable
 
-    $edit_user_query = mysqli_query($connection, $query);
+    // $edit_user_query = mysqli_query($connection, $query);
 
     // confirmDBQuery($edit_user_query);
 
+    // NEW HASHING FROM PHP 5
+    if (!empty($user_password)) {
+        $query_password = "SELECT user_password FROM users WHERE user_id = '{$user_id}' ";
+        $get_user = mysqli_query($connection, $query);
+        confirmDBQuery($get_user);
 
+        $row = mysqli_fetch_array($get_user);
+
+        $db_user_password = $row["user_password"];
+    }
+
+    $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
+    if ($db_user_password != $user_password && !password_verify($user_password, $db_user_password)) {
+        // tutor mistake:
+        // $hashed_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10, 'salt' => "superSecretString"));
+        echo "test";
+        $query = "UPDATE users SET ";
+        $query .= "user_firstname = '{$user_firstname}', ";
+        $query .= "user_lastname = '{$user_lastname}', ";
+        $query .= "user_role = '{$user_role}', ";
+        $query .= "user_name = '{$username}', ";
+        $query .= "user_email = '{$user_email}', ";
+        $query .= "user_password = '{$hashed_password}' ";
+        $query .= "WHERE user_id = {$user_id} ";
+    } else {
+        $query = "UPDATE users SET ";
+        $query .= "user_firstname = '{$user_firstname}', ";
+        $query .= "user_lastname = '{$user_lastname}', ";
+        $query .= "user_role = '{$user_role}', ";
+        $query .= "user_name = '{$username}', ";
+        $query .= "user_email = '{$user_email}' ";
+        $query .= "WHERE user_id = {$user_id} ";
+    }
+
+
+
+
+    $edit_user_query = mysqli_query($connection, $query);
+
+    confirmDBQuery($edit_user_query);
+
+    echo "User Updated" . " <a href='users.php'>View Users?</a>";
 }
 
 

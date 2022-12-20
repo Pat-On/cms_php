@@ -18,7 +18,7 @@ if (isset($_POST['create_user'])) {
     // $user_date         = date('d-m-y');
     // $post_comment_count = 4;
 
-
+    $password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 10));
     // functions for images
     // move_uploaded_file($post_image_temp, "../images/$post_image");
 
@@ -28,7 +28,7 @@ if (isset($_POST['create_user'])) {
     user_name, user_email, user_password) ";
 
     $query .= "VALUES( '{$user_firstname}', '{$user_lastname}',
-    '{$user_role}', '{$username}', '{$user_email}','{$user_password}' ) ";
+    '{$user_role}', '{$username}', '{$user_email}','{$password}' ) ";
 
 
 

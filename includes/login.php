@@ -39,13 +39,15 @@ if (isset($_POST["login"])) {
     }
 
     // password decrypting
-    $password = crypt($password, $db_user_password);
+    // $password = crypt($password, $db_user_password);
 
 
     // simple login without hashing and salting ^^
-    if ($username !== $db_user_name && $password !== $db_user_password) {
-        header("Location: ../index.php");
-    } else if ($username === $db_user_name && $password === $db_user_password) {
+    // if ($username !== $db_user_name && $password !== $db_user_password) {
+    //     header("Location: ../index.php");
+    // } else if ($username === $db_user_name && $password === $db_user_password) {
+
+    if (password_verify($password, $db_user_password)) {
         // using sessions
         $_SESSION['username'] = $db_user_name;
         $_SESSION['firstname'] = $db_user_firstname;

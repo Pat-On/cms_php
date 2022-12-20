@@ -15,23 +15,28 @@ if (isset($_POST["submit"])) {
         $email = mysqli_real_escape_string($connection, $email);
         $password = mysqli_real_escape_string($connection, $password);
 
-        // this looks silly for me ^^
-        $query = "SELECT randSalt FROM users";
-        $select_randsalt_query = mysqli_query($connection, $query);
 
-        if (!$select_randsalt_query) {
-            die("Query Failed" . mysqli_error(($connection)));
-        }
+        $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
+
+
+
+        // this looks silly for me ^^
+        // $query = "SELECT randSalt FROM users";
+        // $select_randsalt_query = mysqli_query($connection, $query);
+
+        // if (!$select_randsalt_query) {
+        //     die("Query Failed" . mysqli_error(($connection)));
+        // }
 
         // fetching data - salt
         // while ($row = mysqli_fetch_array($select_randsalt_query)) {
         //     echo $salt = $row['randSalt'];
         // }
-        $row = mysqli_fetch_array($select_randsalt_query);
-        $salt = $row['randSalt'];
-        echo "password " . $password . "len " . strlen('iusesomecrazystring22');
-        $password = crypt($password, $salt);
-        echo "password " . $password . "salt " . $salt;
+        // $row = mysqli_fetch_array($select_randsalt_query);
+        // $salt = $row['randSalt'];
+        // echo "password " . $password . "len " . strlen('iusesomecrazystring22');
+        // $password = crypt($password, $salt);
+        // echo "password " . $password . "salt " . $salt;
 
         $query = "INSERT INTO users (user_name, user_email, user_password, user_role) ";
         $query .= "VALUES ('{$username}', '{$email}', '{$password}', 'subscriber') ";
