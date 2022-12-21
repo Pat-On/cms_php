@@ -49,6 +49,9 @@ session_start();
                 <li>
                     <a href="registration.php">Registration</a>
                 </li>
+                <li>
+                    <a href="contact.php">Contact</a>
+                </li>
 
                 <?php
                     echo $_SESSION["user_role"];
