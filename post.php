@@ -94,9 +94,9 @@
                     }
 
 
-                    $query = "UPDATE posts SET post_comments_count = post_comments_count + 1 ";
-                    $query .= "WHERE post_id = $the_post_id ";
-                    $update_comment_count = mysqli_query($connection, $query);
+                    // $query = "UPDATE posts SET post_comments_count = post_comments_count + 1 ";
+                    // $query .= "WHERE post_id = $the_post_id ";
+                    // $update_comment_count = mysqli_query($connection, $query);
 
                     redirect(location: "post.php?p_id=$the_post_id");
                 } else {
