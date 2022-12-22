@@ -1,5 +1,33 @@
 <?php
 
+function checkStatus($table, $column, $status ){
+    global $connection;
+
+    $query = "SELECT * FROM $table WHERE $column = '$status'";
+    $result = mysqli_query($connection, $query);
+
+    confirmDBQuery($result);
+
+    return mysqli_num_rows($result);
+
+}
+
+
+
+function recordCount($table)
+{
+    global $connection;
+    $query = "SELECT * FROM " . $table;
+    $select_all_posts = mysqli_query($connection, $query);
+
+    $result = mysqli_num_rows($select_all_posts);
+
+    confirmDBQuery($result);
+
+    return $result;
+}
+
+
 // TODO: implement it into the project
 function escape($string)
 {
