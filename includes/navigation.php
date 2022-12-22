@@ -34,7 +34,27 @@ session_start();
                     // displaying it:
                     while($row = mysqli_fetch_assoc($select_all_categories_query)) {
                         $cat_title = $row['cat_title'];
-                        echo "<li><a href='#'>{$cat_title}</a></li>";
+                        $cat_id = $row['cat_id'];
+
+                        $category_class = '';
+
+                        $registration_class = "";
+                        $contact_class = "";
+
+                        $page_name = basename($_SERVER['PHP_SELF']);
+                        // $test = $_GET['category'];
+                        $registration = 'registration.php';
+                        $contact = "contact.php";
+
+                        if(isset($_GET['category']) && $_GET['category'] == $cat_id){
+                            $category_class = 'active';
+                        } else if($page_name == $registration) {
+                            $registration_class = 'active';
+                        }else if($page_name == $contact) {
+                            $contact_class = 'active';
+                        }
+
+                        echo "<li class='$category_class  $cat_id'><a href='category.php?category={$cat_id}'>{$cat_title}</a></li>";
 
                     };
 
@@ -46,10 +66,10 @@ session_start();
                 <li>
                     <a href="admin">Admin</a>
                 </li>
-                <li>
+                <li class='<?php echo $registration_class ?>'>
                     <a href="registration.php">Registration</a>
                 </li>
-                <li>
+                <li class='<?php echo $contact_class ?>'>
                     <a href="contact.php">Contact</a>
                 </li>
 

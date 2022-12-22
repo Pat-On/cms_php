@@ -24,6 +24,7 @@
                 if (isset($_SESSION["user_role"]) && $_SESSION["user_role"] == "admin") {
                     $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id'";
                 } else {
+                    // TODO: why this is dying?
                     $query = "SELECT * FROM posts WHERE post_category_id = $post_category_id AND post_status = 'published'";
                 }
 

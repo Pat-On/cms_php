@@ -49,7 +49,6 @@
             if (isset($_SESSION["user_role"]) && $_SESSION["user_role"] == "admin") {
                 $query = "SELECT * FROM posts LIMIT $page_1, $per_page ";
             } else {
-                echo "fuc 2";
                 $query = "SELECT * FROM posts WHERE post_status = 'published' LIMIT $page_1, $per_page ";
             }
 
