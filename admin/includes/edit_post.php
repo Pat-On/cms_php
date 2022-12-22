@@ -95,14 +95,18 @@ if (isset($_POST['update_post'])) {
             $query = "SELECT * FROM categories ";
             $select_categories = mysqli_query($connection, $query);
 
-            // confirmDBQuery($select_categories);
+            confirmDBQuery($select_categories);
 
 
             while ($row = mysqli_fetch_assoc($select_categories)) {
                 $cat_id = $row['cat_id'];
                 $cat_title = $row["cat_title"];
 
-                echo "<option value='{$cat_id}'>{$cat_title}</option>";
+                if ($cat_id == $post_category_id) {
+                    echo "<option selected value='{$cat_id}'>{$cat_title}</option>";
+                } else {
+                    echo "<option value='{$cat_id}'>{$cat_title}</option>";
+                }
             }
 
 
@@ -122,7 +126,7 @@ if (isset($_POST['update_post'])) {
 
             <option value='<?php echo $post_status; ?>'><?php echo ucfirst($post_status); ?></option>
             <?php
-            if($post_status=="published") {
+            if ($post_status == "published") {
                 echo "<option value='draft'>Draft</option>";
             } else {
                 echo "<option value='published'>Published</option>";
