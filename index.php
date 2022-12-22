@@ -26,7 +26,14 @@
                 $page = "";
             }
 
-            $select_post_query_count = "SELECT * FROM posts";
+
+            if (isset($_SESSION["user_role"]) && $_SESSION["user_role"] == "admin") {
+                $select_post_query_count = "SELECT * FROM posts";
+            } else {
+                $select_post_query_count = "SELECT * FROM posts WHERE post_status = 'published'";
+            }
+
+
             $find_count = mysqli_query($connection, $select_post_query_count);
             $count = mysqli_num_rows($find_count);
 
@@ -39,7 +46,15 @@
             }
 
 
-            $query = "SELECT * FROM posts WHERE post_status = 'published' LIMIT $page_1, $per_page ";
+            if (isset($_SESSION["user_role"]) && $_SESSION["user_role"] == "admin") {
+                $query = "SELECT * FROM posts LIMIT $page_1, $per_page ";
+            } else {
+                echo "fuc 2";
+                $query = "SELECT * FROM posts WHERE post_status = 'published' LIMIT $page_1, $per_page ";
+            }
+
+
+
             $select_all_posts_query = mysqli_query($connection, $query);
 
 
@@ -93,7 +108,7 @@
             <?php  }
 
             if (mysqli_num_rows($select_all_posts_query) == 0) {
-                echo '<h1> NO POST SORRY </h1>';
+                echo '<h1 class="text-center"> NO POST SORRY </h1>';
             }
             ?>
 
