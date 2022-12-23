@@ -135,7 +135,7 @@ if (isset($_POST["checkBoxArray"]))
 
                 <td><input class='checkBoxes' type='checkbox' class='' id='select' name='checkBoxArray[]' value='<?php echo $post_id ?>'></td>
 
-            <?php
+                <?php
                 // echo "<td><input class='checkBoxes' type='checkbox' class='' id='select'></td>";
                 echo "<td>{$post_id}</td>";
                 echo "<td>{$post_author}</td>";
@@ -160,25 +160,43 @@ if (isset($_POST["checkBoxArray"]))
                 $count_comments = mysqli_num_rows($send_comment_query);
 
                 $row = mysqli_fetch_array($send_comment_query);
-                if(!empty($row)){
-                    $comment_id = $row['comment_id'];         
+                if (!empty($row)) {
+                    $comment_id = $row['comment_id'];
                     echo "<td><a href='./post_comments.php?id=$post_id'>{$count_comments}</a></td>";
-
                 } else {
                     echo "<td>{$count_comments}</td>";
                 }
 
                 // $comment_id = $row['comment_id'];
-                
+
                 // $count_comments = mysqli_num_rows($send_comment_query);
                 // echo "<td><a href='post_comments.php?id=$comment_id'>{$count_comments}</a></td>";
 
                 // echo "<td>{$post_comment_count}</td>";
                 echo "<td>{$post_date}</td>";
-                echo "<td><a href='../post.php?p_id=$post_id'>View Post</a></td>";
-                echo "<td><a href='posts.php?source=edit_post&p_id=$post_id'>Edit</a></td>";
+                echo "<td><a class='btn btn-primary' href='../post.php?p_id=$post_id'>View Post</a></td>";
+                echo "<td><a class='btn btn-info' href='posts.php?source=edit_post&p_id=$post_id'>Edit</a></td>";
                 // interesting syntax:
-                echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete?'); \" href='posts.php?delete=$post_id'>Delete</a></td>";
+
+                ?>
+
+                <form method='post'>
+                    <input type='hidden' name='post_id' value='<?php echo $post_id ?>'>
+
+                    <?php
+
+
+                    echo  '<td> <input class="btn btn-danger" type="submit" name="delete" value="Delete"></td>';
+
+                    ?>
+
+                </form>
+
+            <?php
+
+
+
+                // echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete?'); \" href='posts.php?delete=$post_id'>Delete</a></td>";
 
                 echo "<td><a href='posts.php?reset=$post_id'> {$post_views_count}</a></td>";
                 echo "</tr>";
@@ -191,8 +209,9 @@ if (isset($_POST["checkBoxArray"]))
 
 
 <?php
-if (isset($_GET['delete'])) {
-    $delete_post_id = $_GET['delete'];
+
+if (isset($_POST['delete'])) {
+    $delete_post_id = $_POST['post_id'];
 
     $query = "DELETE FROM posts WHERE post_id = $delete_post_id ";
     $delete_query = mysqli_query($connection, $query);
