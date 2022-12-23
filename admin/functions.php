@@ -174,3 +174,20 @@ function redirect($location)
 {
     return header("Location: " . $location);
 }
+
+function is_admin($username = '') {
+    global $connection;
+
+    $query = "SELECT user_role FROM users WHERE user_name = '$username'";
+    $result = mysqli_query($connection, $query);
+
+    confirmDBQuery($result);
+
+    $row = mysqli_fetch_array($result);
+
+    if($row['user_role'] == 'admin'){
+        return true;
+    } else {
+        return false;
+    }
+}

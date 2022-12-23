@@ -1,5 +1,4 @@
 <?php include "db.php"; ?>
-
 <?php
 // creating session by server for us
 session_start();
